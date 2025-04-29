@@ -36,11 +36,6 @@ Também são gerados gráficos para análise visual das fraudes por localizaçã
 
 3. **(Opcional) Crie e ative um ambiente virtual:**
     python -m venv venv
-    # No Windows
-    venv\Scripts\activate
-
-    # No Linux/Mac
-    source venv/bin/activate
 
 4. **Instale as dependências:**
     pip install -r requirements.txt
