@@ -29,6 +29,5 @@ Também são gerados gráficos para análise visual das fraudes por localizaçã
 ## ⚙️ Instruções de Instalação e Configuração
 
 1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/N1netyN1ne/projeto-fraudes
-   cd projeto-fraudes
+   git clone https://github.com/N1netyN1ne/GuardPay-Project
+   cd GuardPay-Project
