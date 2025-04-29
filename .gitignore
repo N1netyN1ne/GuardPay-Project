@@ -10,8 +10,6 @@ __pycache__/
 # Logs e relatórios
 *.log
 logs/
-*.txt
-*.xlsx
 
 # Arquivos do VSCode ou outros editores
 .vscode/
