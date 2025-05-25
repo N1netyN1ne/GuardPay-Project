@@ -43,14 +43,14 @@ Também são gerados gráficos para análise visual das fraudes.
 4. **Instale as dependências:**
     pip install -r requirements.txt
 
-5. ** Importe o Banco de Dados**
+5. **Importe o Banco de Dados**
     Acesse http://localhost/phpmyadmin
     Crie o banco chamado guardpay
     Vá na aba Importar
     Escolha o arquivo guardpay.sql fornecido em DB/guardpay.sql
     Clique em Executar
     
-6. ** Como Executar**
+6. **Como Executar**
     No terminal, execute:
     streamlit run guardpay/app.py
  
