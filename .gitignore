@@ -23,3 +23,8 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+
+# Ignorar pastas de backup
+backup/
+backup2/
+
