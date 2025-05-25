@@ -32,16 +32,16 @@ Também são gerados gráficos para análise visual das fraudes.
 - Banco de dados `guardpay` criado (veja "Importação do Banco")
 
 1. **Clone o repositório:**
-   git clone https://github.com/N1netyN1ne/GuardPay-Project
+   - git clone https://github.com/N1netyN1ne/GuardPay-Project
 
 2. **Acesse a pasta do projeto:**
-    cd guardpay
+    - cd guardpay
 
 3. **(Opcional) Crie e ative um ambiente virtual:**
-    python -m venv venv
+    - python -m venv venv
 
 4. **Instale as dependências:**
-    pip install -r requirements.txt
+    - pip install -r requirements.txt
 
 5. **Importe o Banco de Dados** 
     - Acesse http://localhost/phpmyadmin
