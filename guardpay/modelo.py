@@ -50,7 +50,6 @@ def treinar_modelo(df):
     joblib.dump(modelo,MODEL_PATH)
     return modelo, "✅ Modelo treinado com sucesso com dados reais.", metricas
 
-
 def carregar_modelo_salvo():
     if os.path.exists(MODEL_PATH):
         return joblib.load(MODEL_PATH)

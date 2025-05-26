@@ -6,6 +6,7 @@ from modelo import treinar_modelo, aplicar_modelo, carregar_modelo_salvo
 from db import carregar_transacoes, conectar_db, historico_por_cliente, inserir_transacoes_analise
 from utils import gerar_transacao_baixoValor_analise, gerar_transacao_altoValor_analise
 
+
 st.set_page_config(page_title="GuardPay - Análise de Fraudes", layout="wide")
 st.title("🔐 GuardPay - Análise de Transações Fraudulentas")
 
@@ -23,6 +24,17 @@ df = carregar_transacoes()
 
 #Carregar modelo salvo
 modelo = carregar_modelo_salvo()
+if modelo is None:
+    modelo, status, metricas = treinar_modelo(df)
+    st.success(status)
+    # exibir métricas se disponíveis
+    if metricas:
+        st.markdown("### Métricas de desempenho do modelo:")
+        for nome, valor in metricas.items():
+            st.write(f"- **{nome}**: {valor:.2f}")
+else:
+    st.success("✅ Modelo carregado do disco com sucesso.")
+    df = aplicar_modelo(modelo, df)
 
 #Verifica se há modelo salvo
 if modelo is None:
@@ -46,9 +58,6 @@ if st.button("Gerar Transação alto  valor para analise"):
     inserir_transacoes_analise(conexao,transacoes)
     st.success("Transação geradas com sucesso!")
     df = carregar_transacoes()
-
-# Treinar o modelo
-modelo, status, metricas = treinar_modelo(df)
 
 if modelo is None:
     st.warning(status)
