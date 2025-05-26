@@ -21,24 +21,8 @@ st.markdown("""
 # Carregar dados do banco
 df = carregar_transacoes()
 
-# Botão para gerar transações de baixo valor para analise do modelo
-if st.button("Gerar Transação baixo valor para analise"):
-    transacoes = gerar_transacao_baixoValor_analise()
-    conexao = conectar_db()
-    inserir_transacoes_analise(conexao,transacoes)
-    st.success("Transação geradas com sucesso!")
-    df = carregar_transacoes()
-
-# Botão para gerar transaçõe de alto valor para analise do modelo
-if st.button("Gerar Transação alto  valor para analise"):
-    transacoes = gerar_transacao_altoValor_analise()
-    conexao = conectar_db()
-    inserir_transacoes_analise(conexao,transacoes)
-    st.success("Transação geradas com sucesso!")
-    df = carregar_transacoes()
-
 #Carregar modelo salvo
-modelo = carregar_modelo_salvo()
+modelo = carregar_modelo_salvo()    
 
 # Treinar se não houver modelo
 if modelo is None:
@@ -67,6 +51,24 @@ else:
 # Aplicar modelo treinado
 df = aplicar_modelo(modelo, df)
 
+# Botão para gerar transações de baixo valor para analise do modelo
+if st.button("Gerar Transação baixo valor para analise"):
+    transacoes = gerar_transacao_baixoValor_analise()
+    conexao = conectar_db()
+    inserir_transacoes_analise(conexao,transacoes)
+    st.success("Transação geradas com sucesso!")
+    df = carregar_transacoes()
+    df = aplicar_modelo(modelo, df)
+    
+# Botão para gerar transaçõe de alto valor para analise do modelo
+if st.button("Gerar Transação alto  valor para analise"):
+    transacoes = gerar_transacao_altoValor_analise()
+    conexao = conectar_db()
+    inserir_transacoes_analise(conexao,transacoes)
+    st.success("Transação geradas com sucesso!")
+    df = carregar_transacoes()
+    df = aplicar_modelo(modelo, df)
+    
 # Exibir total de transações e fraudes
 col1, col2 = st.columns(2)
 col1.metric("🔢 Total de Transações", len(df))
