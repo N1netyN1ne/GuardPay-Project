@@ -70,26 +70,43 @@ if st.button("Gerar Transação alto  valor para analise"):
     df = aplicar_modelo(modelo, df)
     
 # Exibir total de transações e fraudes
-col1, col2 = st.columns(2)
-col1.metric("🔢 Total de Transações", len(df))
-col2.metric("🚨 Total de Fraudes Detectadas", df['Fraude'].sum())
+col1, col2, col3 = st.columns([1,2,1])
+with col1:
+    st.markdown("""
+        <div style="text-align: center;">
+            <h5>🔢 Total de Transações</h5>
+            <h2 style="color: white;">{}</h2>
+        </div>
+    """.format(len(df)), unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+        <div style="text-align: center;">
+            <h5>🚨 Total de Fraudes Detectadas</h5>
+            <h2 style="color: white;">{}</h2>
+        </div>
+    """.format(df['Fraude'].sum()), unsafe_allow_html=True)
 
 # Gráfico de barras
 df['Fraude_Label'] = df['Fraude'].map({0: 'Não Fraude', 1: 'Fraude'})
-st.subheader("📊 Distribuição de Transações Fraudulentas")
-fig, ax = plt.subplots(figsize=(4, 3))
-sns.countplot(data=df, x='Fraude_Label', palette='pastel', ax=ax)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.markdown("<h3 style='text-align: center;'>📊 Distribuição de Transações Fraudulentas</h3>", unsafe_allow_html=True)
+    fig, ax = plt.subplots(figsize=(5, 3.5))
+    sns.countplot(data=df, x='Fraude_Label', palette='pastel', ax=ax)
 
-# Rótulos nas barras
-for p in ax.patches:
-    ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width()/2, p.get_height()),
-                ha='center', va='bottom', fontsize=9, color='black')
+    # Adicionar rótulos nas barras
+    for p in ax.patches:
+        ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width()/2, p.get_height()),
+                    ha='center', va='bottom', fontsize=9, color='black')
 
-ax.set_xlabel("Tipo de Transação", fontsize=10)
-ax.set_ylabel("Quantidade", fontsize=10)
-ax.set_title("Classificação das Transações pela IA", fontsize=11)
-ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-st.pyplot(fig)
+    ax.set_xlabel("Tipo de Transação", fontsize=10)
+    ax.set_ylabel("Quantidade", fontsize=10)
+    ax.set_title("Classificação das Transações pela IA", fontsize=11)
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # Exibir o gráfico centralizado
+    st.pyplot(fig, use_container_width=True)
 
 # Tabela geral de transaçoes
 st.subheader("🔍 Lista de Transações completa")
