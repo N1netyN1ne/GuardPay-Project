@@ -14,7 +14,7 @@ def gerar_transacao_altoValor_analise(n=1):
     transacoes = []
     for _ in range(n):
         cliente_id = np.random.randint(100, 111)
-        valor = float(np.random.randint(1000, 100000))
+        valor = float(np.random.randint(1000, 10000))
         freq = int(np.random.randint(1, 30))
         transacoes.append((cliente_id, valor, freq))
     return transacoes

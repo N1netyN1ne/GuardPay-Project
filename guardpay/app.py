@@ -105,7 +105,6 @@ with col2:
     ax.set_title("Classificação das Transações pela IA", fontsize=11)
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
-    # Exibir o gráfico centralizado
     st.pyplot(fig, use_container_width=True)
 
 # Tabela geral de transaçoes
@@ -118,12 +117,12 @@ df_fraudes = df[df['Fraude'] == 1]
 st.dataframe(df_fraudes[['Transacao_ID', 'Cliente_ID', 'Valor_Transacao', 'Frequencia','fraude_real']])
 
 # Histórico por cliente
-st.subheader("📁 Histórico de Transações por Cliente com Fraude")
-clientes_fraudados = df[df['Fraude'] == 1]['Cliente_ID'].unique()
-cliente_escolhido = st.selectbox("Selecione um Cliente", clientes_fraudados)
-if cliente_escolhido:
-    historico = historico_por_cliente(cliente_escolhido)
-    st.write(f"Transações do Cliente **{cliente_escolhido}**:")
+st.subheader("📁 Histórico de Transações por Cliente")
+clientes = df['Cliente_ID'].unique()
+cliente= st.selectbox("Selecione um Cliente", clientes)
+if cliente:
+    historico = historico_por_cliente(cliente)
+    st.write(f"Transações do Cliente **{cliente}**:")
     st.dataframe(historico[['Transacao_ID', 'Valor_Transacao', 'Frequencia', 'fraude_real']])
 
 #Desempenho do modelo

@@ -13,7 +13,8 @@ def carregar_transacoes():
     conexao = conectar_db()
     query = """
     SELECT *
-    FROM transacoes
+    FROM transacoes 
+    ORDER BY Transacao_ID DESC
     """
     df = pd.read_sql(query, conexao)
     conexao.close()
