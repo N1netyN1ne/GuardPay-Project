@@ -6,7 +6,6 @@ from modelo import treinar_modelo, aplicar_modelo, carregar_modelo_salvo
 from db import carregar_transacoes, conectar_db, historico_por_cliente, inserir_transacoes_analise
 from utils import gerar_transacao_baixoValor_analise, gerar_transacao_altoValor_analise
 
-
 st.set_page_config(page_title="GuardPay - Análise de Fraudes", layout="wide")
 st.title("🔐 GuardPay - Análise de Transações Fraudulentas")
 
@@ -21,27 +20,6 @@ st.markdown("""
 
 # Carregar dados do banco
 df = carregar_transacoes()
-
-#Carregar modelo salvo
-modelo = carregar_modelo_salvo()
-if modelo is None:
-    modelo, status, metricas = treinar_modelo(df)
-    st.success(status)
-    # exibir métricas se disponíveis
-    if metricas:
-        st.markdown("### Métricas de desempenho do modelo:")
-        for nome, valor in metricas.items():
-            st.write(f"- **{nome}**: {valor:.2f}")
-else:
-    st.success("✅ Modelo carregado do disco com sucesso.")
-    df = aplicar_modelo(modelo, df)
-
-#Verifica se há modelo salvo
-if modelo is None:
-    modelo, status = treinar_modelo(df)
-    st.info("ℹ️ Novo modelo treinado, pois nenhum modelo salvo foi encontrado.")
-else:
-    st.success("✅ Modelo carregado com sucesso.")
 
 # Botão para gerar transações de baixo valor para analise do modelo
 if st.button("Gerar Transação baixo valor para analise"):
@@ -59,9 +37,32 @@ if st.button("Gerar Transação alto  valor para analise"):
     st.success("Transação geradas com sucesso!")
     df = carregar_transacoes()
 
+#Carregar modelo salvo
+modelo = carregar_modelo_salvo()
+
+# Treinar se não houver modelo
 if modelo is None:
-    st.warning(status)
-    st.stop()
+    modelo, status, metricas = treinar_modelo(df)
+    if modelo is None:
+        st.warning("❌ O modelo não pôde ser treinado. Verifique os dados rotulados.")
+        st.stop()
+    else:
+        st.info("ℹ️ Modelo treinado a partir dos dados rotulados.")
+else:
+    st.success("✅ Modelo carregado do disco com sucesso.")
+    df = aplicar_modelo(modelo, df)
+    from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+    df_avaliacao = df[df['fraude_real'].notnull()]
+    if not df_avaliacao.empty:
+        metricas = {
+            'Acurácia': accuracy_score(df_avaliacao['fraude_real'], df_avaliacao['Fraude']),
+            'Precisão': precision_score(df_avaliacao['fraude_real'], df_avaliacao['Fraude']),
+            'Recall': recall_score(df_avaliacao['fraude_real'], df_avaliacao['Fraude']),
+            'F1-score': f1_score(df_avaliacao['fraude_real'], df_avaliacao['Fraude']),
+        }
+    else:
+        metricas = None
 
 # Aplicar modelo treinado
 df = aplicar_modelo(modelo, df)
@@ -70,9 +71,6 @@ df = aplicar_modelo(modelo, df)
 col1, col2 = st.columns(2)
 col1.metric("🔢 Total de Transações", len(df))
 col2.metric("🚨 Total de Fraudes Detectadas", df['Fraude'].sum())
-
-# Mapear rótulos
-df['Fraude_Label'] = df['Fraude'].map({0: 'Não Fraude', 1: 'Fraude'})
 
 # Gráfico de barras
 df['Fraude_Label'] = df['Fraude'].map({0: 'Não Fraude', 1: 'Fraude'})
@@ -104,15 +102,14 @@ st.dataframe(df_fraudes[['Transacao_ID', 'Cliente_ID', 'Valor_Transacao', 'Frequ
 st.subheader("📁 Histórico de Transações por Cliente com Fraude")
 clientes_fraudados = df[df['Fraude'] == 1]['Cliente_ID'].unique()
 cliente_escolhido = st.selectbox("Selecione um Cliente", clientes_fraudados)
-
 if cliente_escolhido:
     historico = historico_por_cliente(cliente_escolhido)
     st.write(f"Transações do Cliente **{cliente_escolhido}**:")
     st.dataframe(historico[['Transacao_ID', 'Valor_Transacao', 'Frequencia', 'fraude_real']])
 
+#Desempenho do modelo
 st.markdown("---")
 st.subheader("📊 Desempenho do Modelo")
-
 if metricas:
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Acurácia", f"{metricas['Acurácia']:.2%}")
