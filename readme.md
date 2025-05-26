@@ -35,7 +35,7 @@ Também são gerados gráficos para análise visual das fraudes.
    - git clone https://github.com/N1netyN1ne/GuardPay-Project
 
 2. **Acesse a pasta do projeto:**
-    - cd guardpay
+    - cd guardpay-project
 
 3. **(Opcional) Crie e ative um ambiente virtual:**
     - python -m venv venv
