@@ -48,7 +48,12 @@ def treinar_modelo(df):
         'F1-score': f1_score(y_test, y_pred, zero_division=0),
     }
 
-    joblib.dump(modelo, 'modelo/modelo_treinado.pkl')
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    modelo_dir = os.path.join(base_dir, 'modelo')
+    os.makedirs(modelo_dir, exist_ok=True)
+    
+    caminho_modelo = os.path.join(modelo_dir, 'modelo_treinado.pkl')
+    joblib.dump(modelo, caminho_modelo)
 
     return modelo, "Modelo treinado com sucesso!", metricas
 

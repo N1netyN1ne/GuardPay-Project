@@ -52,6 +52,6 @@ Também são gerados gráficos para análise visual das fraudes.
     
 6. **Como Executar**
     - No terminal, execute:
-    - streamlit run guardpay/app.py
+    - python -m streamlit run app.py
  
 
