@@ -92,8 +92,16 @@ df['Fraude_Label'] = df['Fraude'].map({0: 'Não Fraude', 1: 'Fraude'})
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.markdown("<h3 style='text-align: center;'>📊 Distribuição de Transações Fraudulentas</h3>", unsafe_allow_html=True)
+
+    categoria_ordem = ['Não Fraude', 'Fraude']
+    cores_personalizadas = {
+        'Não Fraude': '#4CAF50', # Verde para Não Fraude
+        'Fraude': "#FF1D1D"     # Vermelho-alaranjado para Fraude (ou 'darkorange'/'steelblue' como antes)
+    }
+    palette_final = [cores_personalizadas[label] for label in categoria_ordem]
     fig, ax = plt.subplots(figsize=(5, 3.5))
-    sns.countplot(data=df, x='Fraude_Label', palette='pastel', ax=ax)
+
+    sns.countplot(data=df, x='Fraude_Label', order=categoria_ordem, palette=palette_final, ax=ax)
 
     # Adicionar rótulos nas barras
     for p in ax.patches:
