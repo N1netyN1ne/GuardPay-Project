@@ -4,6 +4,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import joblib
 import os
 
+
 def treinar_modelo(df):
     # Filtrar dados rotulados para treinamento
     df_treino = df[df['fraude_real'].notnull()].copy() # Use .copy() para evitar SettingWithCopyWarning
@@ -33,7 +34,7 @@ def treinar_modelo(df):
     X = df_treino[['Valor_Transacao', 'Frequencia', 'Diferenca_Valor', 'Diferenca_Frequencia']]
     y = df_treino['fraude_real'].astype(int)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 
     modelo = RandomForestClassifier(n_estimators=100, random_state=42)
     modelo.fit(X_train, y_train)
@@ -59,7 +60,7 @@ def aplicar_modelo(modelo, df):
     df_temp = df.copy()
 
     # Calcular médias APENAS para transações que são explicitamente 'Não Fraude' (0)
-    df_nao_fraude_historico = df_temp[df_temp['fraude_real'] != 1] # Inclui 0 e None
+    df_nao_fraude_historico = df_temp[df_temp['fraude_real'] == 0] # Inclui 0 e None
 
     # Calcular as médias com base neste subconjunto
     medias_valor_cliente = df_nao_fraude_historico.groupby('Cliente_ID')['Valor_Transacao'].mean()

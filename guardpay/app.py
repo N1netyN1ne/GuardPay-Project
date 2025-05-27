@@ -25,7 +25,7 @@ df = carregar_transacoes()
 modelo = carregar_modelo_salvo()    
 
 # Treinar se não houver modelo
-if modelo is None:
+if modelo is None: 
     modelo, status, metricas = treinar_modelo(df)
     if modelo is None:
         st.warning("❌ O modelo não pôde ser treinado. Verifique os dados rotulados.")
@@ -105,6 +105,7 @@ with col2:
     ax.set_title("Classificação das Transações pela IA", fontsize=11)
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
+    # Exibir o gráfico centralizado
     st.pyplot(fig, use_container_width=True)
 
 # Tabela geral de transaçoes
