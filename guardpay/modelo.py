@@ -98,7 +98,11 @@ def aplicar_modelo(modelo, df):
     return df
 
 def carregar_modelo_salvo():
-    caminho_modelo = 'modelo/modelo_treinado.pkl'
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    modelo_dir = os.path.join(base_dir, 'modelo')
+    os.makedirs(modelo_dir, exist_ok=True)
+    
+    caminho_modelo = os.path.join(modelo_dir, 'modelo_treinado.pkl')
     if os.path.exists(caminho_modelo):
         return joblib.load(caminho_modelo)
     return None
