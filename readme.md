@@ -17,8 +17,6 @@ A detecção de fraudes é realizada através de aprendizado supervisionado, uti
 
 ## 👨‍💻 Tecnologias Utilizadas
 
-Liste as principais tecnologias, linguagens, frameworks e bibliotecas utilizadas:
-
 - Python 3.12
 - Streamlit
 - MySQL
